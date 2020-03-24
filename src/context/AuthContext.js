@@ -1,10 +1,12 @@
 import createDataContext from './createDataContext';
 import trackerApi from '../Api/tracker';
+import { AsyncStorage } from 'react-native';
+import { navigate } from '../navigationRef';
 
 const authReducer = ( state, action ) => {
   switch(action.type){ 
     case 'signup':
-      return
+      return {error: '', token: action.payload}
     case 'signin':
       return
     case 'sign_out':
@@ -17,42 +19,30 @@ const authReducer = ( state, action ) => {
 };
 // TOKEN test4 / eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTdhNWM0NDc5ZjA5NDM1YmExYzFhZTAiLCJpYXQiOjE1ODUwNzczMTZ9.SNuWx537OU6D_QjXcEcLTaF58JqPflLualj8aQAtQ78
 
-const signup = (dispatch) => {
-  return async ({email, password}) => {
+const signup = (dispatch) => async ({email, password}) => {
     try {
-      let response = await trackerApi.post('/signup',{
-      email,
-      password
-    });
-    console.log('response', response.data)
+      let response = await trackerApi.post('/signup',{ email,password });
+      await AsyncStorage.setItem('token', response.data.token);
+      dispatch({type: 'signup', payload: response.data.token});
+      //navigate to mainFlow => TrackList
+      navigate('TrackList');
     } catch (err) {
       dispatch({type: 'add_error', payload: `Error during sign up.`})
     }
-    // make API request with the provided email and password
-    
+  };
 
-    // If correct, then modify state to show we are authenticated
-
-    // If FAILS, show error message
-  }
-};
-
-const signin = (dispatch) => {
-  return ({email, password}) => {
+const signin = (dispatch) => async ({email, password}) => {
     // try and sign in
     // handle success by updating state
     // if Fails show error
-  }
-};
+  };
 
-const signOut = (dispatch) => {
-  return () => {
+const signOut = (dispatch) => () => {
     // try and sign out
-  }
-}
+  };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
   { signup, signin, signOut },
-  { isSignedIn:false, error: '' }
+  { token:null , error: '' }
 )
