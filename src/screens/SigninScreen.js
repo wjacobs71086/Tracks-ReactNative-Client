@@ -3,12 +3,23 @@ import { View, StyleSheet, Text } from 'react-native';
 import AuthForm from '../components/AuthForm';
 import NavLink from '../components/NavLink';
 import { Context as AuthContext } from '../context/AuthContext';
+import { NavigationEvents } from 'react-navigation';
 
 const SigninScreen = () => {
-  const { state, signin } = useContext(AuthContext);
+  const { state, signin, clearError } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
+      <NavigationEvents 
+        // we are about to nav to the screen, basically "onClick"
+        //onWillFocus
+        // when we successfully complete the navigation
+        //onDidFocus
+        // when navigating AWAY from a screen
+        onWillBlur={clearError}
+        // When the transition completes
+        //onDidBlur
+      />
       <AuthForm
         headerText='Sign in'
         onSubmit={signin}
@@ -26,6 +37,8 @@ const SigninScreen = () => {
 SigninScreen.navigationOptions = () => {
   return {headerShown: false }
 };
+
+
 
 const styles = StyleSheet.create({
   container:{
