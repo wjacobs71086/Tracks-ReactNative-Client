@@ -11,6 +11,7 @@ import TrackListScreen from './src/screens/TrackListScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
 import SplashScreen from './src/screens/SplashScreen';
+import { Provider as LocationProvider } from './src/context/LocationContext';
 
 const switchNavigator = createSwitchNavigator({
   Splash: SplashScreen,
@@ -32,9 +33,11 @@ const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
+<LocationProvider>
   <AuthProvider>
     {/* This pushes that navigator and sets it to an outside variable that we can use in unrelated files such as a context file */}
     <App ref={(navigator) => setNavigator(navigator)}/>
   </AuthProvider>
+</LocationProvider>
   )
 };
