@@ -4,9 +4,7 @@ import { Text } from 'react-native-elements';
 import MapView, { Polyline } from 'react-native-maps';
 
 
-
 const Map = () => {
-  
   let points =[];
   for(let i = 0; i < 20; i++){
     if( i%2){
@@ -22,6 +20,7 @@ const Map = () => {
     }
     
   }
+
   return(
     <View>
       <Text h5> I'm A MAP</Text>
