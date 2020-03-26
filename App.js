@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -11,8 +10,10 @@ import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import TrackListScreen from './src/screens/TrackListScreen';
 import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
+import SplashScreen from './src/screens/SplashScreen';
 
 const switchNavigator = createSwitchNavigator({
+  Splash: SplashScreen,
   loginFlow: createStackNavigator({
     Signup:SignupScreen,
     Signin: SigninScreen,
