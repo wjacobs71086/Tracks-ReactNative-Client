@@ -9,11 +9,11 @@ const locationReducer = ( state, action ) => {
   };
 };
 
-const startRecording = dispatch = () => {
+const startRecording = dispatch => () => {
 
 };
 
-const stopRecording = dispatch = () => {
+const stopRecording = dispatch => () => {
 
 };
 
