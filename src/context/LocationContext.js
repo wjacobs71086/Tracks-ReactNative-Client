@@ -31,7 +31,11 @@ const stopRecording = dispatch => () => {
 
 const addLocation = dispatch => (location, recording) => {
   dispatch({type: 'add_current_location', payload: location});
-  if( recording ) dispatch({type:'add_location', payload: location});
+  console.log('This is the value of returning in Location Context',recording)
+  if(recording) {
+    console.log('Im adding new locations')
+    dispatch({type:'add_location', payload: location})
+  };
 };
 
 export const { Context, Provider } = createDataContext(

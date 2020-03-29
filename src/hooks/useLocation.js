@@ -2,36 +2,44 @@ import { useEffect, useState } from 'react';
 import { Accuracy, requestPermissionsAsync, watchPositionAsync } from 'expo-location';
 
 
-export default (shouldTrack,callback) => {
+export default (shouldTrack , callback) => {
   const [ err, setErr ] = useState(null);
-  const [subscriber, setSubscriber ] = useState(null)
+  
 
-  const startWatching = async () => {
-    try{
-      await requestPermissionsAsync();
-      const sub = await watchPositionAsync(
-        {
-        accuracy: Accuracy.BestForNavigation,
-        timeInterval: 1000,
-        distanceInterval: 10
-        }, 
-        callback
-      );
-      setSubscriber(sub);
-    } catch(err) {
-      setErr(err)
+
+  useEffect(() => {
+    let subscriber;
+    const startWatching = async () => {
+      try {
+        await requestPermissionsAsync();
+        subscriber = await watchPositionAsync(
+          {
+          accuracy: Accuracy.BestForNavigation,
+          timeInterval: 1000,
+          distanceInterval: 10
+          }, 
+          callback
+        );
+      } catch(err) {
+        setErr(err)
+      }
     }
-  }
 
-  useEffect(()=>{
+
     if(shouldTrack){
       startWatching();
     } else {
-      subscriber.remove();
-      setSubscriber(null);
+      if(subscriber){
+        subscriber.remove();
+        setSubscriber = null;
+      }
     }
-    
-  }, [shouldTrack])
+    return () => {
+     if(subscriber) {
+       subscriber.remove();
+     }
+    };
+  }, [shouldTrack, callback ]);
 
 //this is a convention of hooks to return an array since you may return multiple items.
 return [err];
